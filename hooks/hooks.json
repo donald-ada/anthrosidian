@@ -1,0 +1,27 @@
+{
+  "description": "Inject Obsidian vault context on session start; detect URLs in user prompts",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/url-detect.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

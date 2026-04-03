@@ -1,0 +1,12 @@
+{
+  "name": "obsidian-vault",
+  "version": "1.0.0",
+  "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, and URL ingestion from any project directory",
+  "author": {
+    "name": "Donald Ada",
+    "url": "https://github.com/donald-ada"
+  },
+  "repository": "https://github.com/donald-ada/obsidian-vault",
+  "license": "MIT",
+  "keywords": ["obsidian", "knowledge-base", "wiki", "daily-log", "notes", "zettelkasten"]
+}
