@@ -17,7 +17,7 @@ TODAY=$(date +%Y-%m-%d)
 
 # Persist vault path for other hooks in this session
 if [[ -n "${CLAUDE_ENV_FILE:-}" ]]; then
-  printf 'VAULT_PATH=%s\n' "$VAULT" >> "$CLAUDE_ENV_FILE"
+  printf 'VAULT_PATH="%s"\n' "$VAULT" >> "$CLAUDE_ENV_FILE"
 fi
 
 # Build context
