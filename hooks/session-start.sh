@@ -22,37 +22,28 @@ fi
 
 # Build context
 CONTEXT="<obsidian-vault>\n\
-你维护一个 Obsidian 知识库，从任何项目目录皆可操作。\n\n\
+The user has an Obsidian knowledge base. Use the skills below when the user explicitly asks to interact with it.\n\n\
 Vault: ${VAULT}\n\
-今日日志: ${VAULT}/daily/${TODAY}.md\n\n\
-触发词（识别后立即执行，无需用户指定 skill）:\n\
-  \"记录一下\" / \"记一下\"         → 写入今日 daily note\n\
-  \"总结一下\" / \"编译知识库\"     → wiki 编译工作流\n\
-  \"查一下wiki\" / \"知识库里有\"   → Q&A 工作流\n\
-  粘贴 URL                          → obsidian:defuddle 抓取存到 raw/\n\
-  \"lint知识库\" / \"health check\"  → wiki 健康检查\n\
-  \"出报告\" / \"生成报告\"           → 输出到 output/\n\n\
-Vault 结构:\n\
-  daily/     今日日志 (YYYY-MM-DD.md)\n\
-  wiki/      LLM 编译知识文章（Claude 完全拥有）\n\
-  raw/       源材料（用户放入，Claude 读取）\n\
-  output/    报告/幻灯片/可视化\n\
-  assets/    媒体文件\n\
-  templates/ 笔记模板\n\n\
-Skill 路由:\n\
-  URL 抓取  → obsidian:defuddle\n\
-  读写搜索  → obsidian:obsidian-cli\n\
-  MD 格式   → obsidian:obsidian-markdown\n\
-  知识图谱  → obsidian:json-canvas\n\
-  数据视图  → obsidian:obsidian-bases\n\n\
-Daily note 格式:\n\
-  ### <标题>\n\
-  **Context:** 项目/场景\n\
-  **Problem:** 问题描述\n\
-  **Solution:** 解决方案\n\
-  **Why it works:** 原理简释\n\n\
-完整 wiki 编译规则: ${VAULT}/CLAUDE.md\n\
-如未配置 vault 路径，运行: /obsidian-vault:setup\n\
+Today's daily note: ${VAULT}/daily/${TODAY}.md\n\n\
+Available skills:\n\
+  obsidian-vault:daily-log    — log / record something to today's daily note\n\
+  obsidian-vault:compile-wiki — compile raw notes into wiki articles\n\
+  obsidian-vault:qa-wiki      — search or look something up in the wiki\n\
+  obsidian-vault:health-check — audit and fix wiki quality issues\n\
+  obsidian:defuddle           — fetch a URL and save content to raw/\n\n\
+Vault structure:\n\
+  daily/     daily notes (YYYY-MM-DD.md)\n\
+  wiki/      LLM-compiled knowledge articles (owned by Claude)\n\
+  raw/       source materials (added by user, read by Claude)\n\
+  output/    reports / slides / visualizations\n\
+  assets/    media files\n\
+  templates/ note templates\n\n\
+When the user asks to record, log, or save something to their knowledge base:\n\
+  - If it is clear they mean today's daily note, use obsidian-vault:daily-log.\n\
+  - If the destination or format is ambiguous, ask one focused clarifying question\n\
+    before proceeding (e.g. \"Should I add this to today's daily note, or create a wiki article?\").\n\n\
+Full wiki compile rules: ${VAULT}/CLAUDE.md\n\
+If vault path is not configured, run: /obsidian-vault:setup\n\
 </obsidian-vault>"
 
 # Escape for JSON string
