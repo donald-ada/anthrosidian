@@ -1,6 +1,6 @@
 {
   "name": "obsidian-vault",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, and URL ingestion from any project directory",
   "author": {
     "name": "Donald Ada",
