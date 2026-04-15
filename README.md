@@ -28,32 +28,15 @@ A Claude Code plugin that connects your Obsidian knowledge base to any project s
 
 ## Installation
 
-### 1. Register the marketplace
+### 1. Add the marketplace and install the plugin
 
-Add to `~/.claude/settings.json`:
+In Claude Code, run:
 
-```json
-"extraKnownMarketplaces": {
-  "anthrosidian-plugin": {
-    "source": {
-      "source": "github",
-      "repo": "donald-ada/anthrosidian"
-    }
-  }
-}
+```
+/plugin marketplace add donald-ada/anthrosidian
 ```
 
-### 2. Enable the plugin
-
-```json
-"enabledPlugins": {
-  "anthrosidian@anthrosidian-plugin": true
-}
-```
-
-### 3. Run setup
-
-In Claude Code (from any directory):
+### 2. Run setup
 
 ```
 /anthrosidian:setup
@@ -62,7 +45,6 @@ In Claude Code (from any directory):
 Enter your vault path when prompted. Config is saved to `~/.claude/obsidian-vault.conf`.
 
 > **Required**: The plugin will not activate without this config file. If the file is missing, each session will prompt you to run `/anthrosidian:setup`.
-
 ## Vault Structure
 
 ```
