@@ -39,6 +39,8 @@ date: YYYY-MM-DD
 
 ## Entry Format
 
+**Output language:** write the actual log content in the user's working language (the language they wrote/spoke in this conversation). The English placeholders and examples in this skill are documentation only — do not mimic their language. Field labels (`Context:` / `Symptom:` / `Cause:` / `Solution:` / `Why it works:`) stay in English to keep grep compatibility with historical notes; everything else (titles, narrative, identifiers used in prose) follows the user's language.
+
 ### Tasks section
 
 Append completed work items under `## Tasks` as checked checkboxes:
