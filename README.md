@@ -8,7 +8,7 @@ A Claude Code and Codex plugin that connects your Obsidian knowledge base to any
 - **Wiki compilation**: Transform raw source materials into structured wiki articles
 - **Knowledge Q&A**: Search and answer questions from your Obsidian wiki
 - **Health checks**: Detect broken links, orphan articles, and missing index entries
-- **URL ingestion**: Paste a URL to fetch and save content via `obsidian:defuddle`
+- **URL ingestion**: Paste a URL to fetch and save content into `raw/` with the bundled Anthrosidian helper
 - **Works everywhere**: SessionStart hook injects vault context into every session, from any project directory
 - **Dual plugin support**: Claude Code metadata lives in `.claude-plugin/`; Codex metadata lives in `.codex-plugin/`
 
@@ -25,7 +25,9 @@ A Claude Code and Codex plugin that connects your Obsidian knowledge base to any
 ## Requirements
 
 - [Claude Code](https://claude.ai/code) ≥ 2.0 or Codex with local plugin support
-- [obsidian-skills](https://github.com/kepano/obsidian-skills) plugin (`obsidian:defuddle`, `obsidian:obsidian-cli`, etc.)
+- Python 3 for the bundled URL ingestion helper
+
+Anthrosidian does not require any separate Obsidian skill package.
 
 ## Installation
 

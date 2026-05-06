@@ -44,10 +44,9 @@ Vault: ${VAULT}\n\
 Today's daily note: ${VAULT}/daily/${TODAY:0:4}/${TODAY}.md\n\n\
 Available skills:\n\
   anthrosidian:daily-log    — log / record something to today's daily note\n\
-  anthrosidian:compile-wiki — compile raw notes into wiki articles\n\
+  anthrosidian:compile-wiki — ingest URLs, compile raw notes, and update wiki articles\n\
   anthrosidian:qa-wiki      — search or look something up in the wiki\n\
-  anthrosidian:health-check — audit and fix wiki quality issues\n\
-  obsidian:defuddle           — fetch a URL and save content to raw/\n\n\
+  anthrosidian:health-check — audit and fix wiki quality issues\n\n\
 Vault structure:\n\
   daily/     daily notes (YYYY-MM-DD.md)\n\
   wiki/      LLM-compiled knowledge articles (owned by Claude)\n\

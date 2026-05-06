@@ -23,4 +23,4 @@ Answer questions by searching and reading the Obsidian wiki.
 
 - Search `raw/` for uncompiled source materials that might contain the answer
 - Offer to compile raw material into a new wiki article
-- Suggest using web search + `obsidian:defuddle` to ingest new sources on the topic
+- Suggest using web search or the bundled `compile-wiki/scripts/ingest_url.py` helper to ingest new sources on the topic

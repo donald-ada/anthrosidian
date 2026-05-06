@@ -27,7 +27,7 @@ When linking to other daily notes from anywhere in the vault, use **basename wik
 
 ## If Daily Note Doesn't Exist
 
-Create it with this template (use `obsidian:obsidian-cli` or write directly):
+Create it directly with this template:
 
 ```markdown
 ---
