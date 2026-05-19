@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SessionStart hook: load vault config and inject context into every session
-# Output: JSON with additionalContext
+# Output: JSON with SessionStart additionalContext
 
 set -euo pipefail
 
@@ -69,5 +69,5 @@ import sys, json
 print(json.dumps(sys.stdin.read())[1:-1])
 " 2>/dev/null)
 
-printf '{"additionalContext": "%s"}\n' "$escaped"
+printf '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' "$escaped"
 exit 0

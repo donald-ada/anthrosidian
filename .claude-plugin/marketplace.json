@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, and URL ingestion from any project directory",
-    "version": "1.0.0"
+    "version": "1.0.9"
   },
   "plugins": [
     {

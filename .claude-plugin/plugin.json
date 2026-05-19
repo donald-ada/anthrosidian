@@ -1,6 +1,6 @@
 {
   "name": "anthrosidian",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, work review, and URL ingestion from any project directory",
   "author": {
     "name": "Donald Ada",
