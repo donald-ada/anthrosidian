@@ -4,20 +4,36 @@
 
 set -euo pipefail
 
-if [[ -n "${CODEX_PLUGIN_ROOT:-}" || -n "${CODEX_ENV_FILE:-}" ]]; then
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -n "${CODEX_PLUGIN_ROOT:-}" || -n "${CODEX_ENV_FILE:-}" || "$PLUGIN_ROOT" == "$HOME"/.codex/plugins/* ]]; then
   PLATFORM="Codex"
-  CONFIG="$HOME/.codex/obsidian-vault.conf"
   SETUP_COMMAND="anthrosidian:setup"
 else
   PLATFORM="Claude Code"
-  CONFIG="$HOME/.claude/obsidian-vault.conf"
   SETUP_COMMAND="/anthrosidian:setup"
 fi
 
-# Load user config
-if [[ -f "$CONFIG" ]]; then
-  # shellcheck source=/dev/null
-  source "$CONFIG"
+PRIMARY_CONFIG="$HOME/.obsidian-vault.conf"
+CONFIG="$PRIMARY_CONFIG"
+CONFIG_CANDIDATES=(
+  "$PRIMARY_CONFIG"
+  "$HOME/.codex/obsidian-vault.conf"
+  "$HOME/.claude/obsidian-vault.conf"
+)
+
+# Load the first configured vault path. The home-level config is shared by
+# Codex and Claude Code so hook environment detection cannot pick the wrong file.
+if [[ -z "${VAULT_PATH:-}" ]]; then
+  for candidate in "${CONFIG_CANDIDATES[@]}"; do
+    if [[ -f "$candidate" ]]; then
+      CONFIG="$candidate"
+      # shellcheck source=/dev/null
+      source "$candidate"
+      break
+    fi
+  done
 fi
 
 TODAY=$(date +%Y-%m-%d)
@@ -26,7 +42,14 @@ TODAY=$(date +%Y-%m-%d)
 if [[ -z "${VAULT_PATH:-}" ]]; then
   CONTEXT="<anthrosidian>\n\
 anthrosidian plugin is installed but vault path is not configured.\n\
-Run ${SETUP_COMMAND} to set your vault path and create ${CONFIG}.\n\
+Run ${SETUP_COMMAND} to set your vault path, or create ${PRIMARY_CONFIG}.\n\
+</anthrosidian>"
+elif [[ ! -d "$VAULT_PATH" ]]; then
+  CONTEXT="<anthrosidian>\n\
+anthrosidian vault path is configured but does not exist.\n\
+Config: ${CONFIG}\n\
+VAULT_PATH: ${VAULT_PATH}\n\
+Update ${PRIMARY_CONFIG} or run ${SETUP_COMMAND}.\n\
 </anthrosidian>"
 else
   VAULT="$VAULT_PATH"
@@ -59,7 +82,7 @@ When the user asks to record, log, or save something to their knowledge base:\n\
   - If the destination or format is ambiguous, ask one focused clarifying question\n\
     before proceeding (e.g. \"Should I add this to today's daily note, or create a wiki article?\").\n\n\
 Full wiki compile rules: check ${VAULT}/AGENTS.md or ${VAULT}/CLAUDE.md when present\n\
-To update vault path: ${SETUP_COMMAND} [new-path]\n\
+To update vault path: edit ${PRIMARY_CONFIG}, or run ${SETUP_COMMAND} [new-path]\n\
 </anthrosidian>"
 fi
 
