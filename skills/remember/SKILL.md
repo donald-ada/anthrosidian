@@ -42,6 +42,7 @@ when nothing fits.
 ## 3. After writing
 
 1. Update `$KB_PATH/index.md` — one line per touched note, under its `## <domain>`.
+   Remove the `(no notes yet)` placeholder on the first ever write.
 2. **Neighbor revisit**: open the 2–3 most related notes; update their links/keywords
    if the new knowledge changes their context.
 3. **Budget check**: if `index.md` exceeds ~180 lines, apply the overflow rule from
