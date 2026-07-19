@@ -47,9 +47,14 @@ when nothing fits.
    if the new knowledge changes their context.
 3. **Budget check**: if `index.md` exceeds ~180 lines, apply the overflow rule from
    AGENTS.md (spill the largest domain into `notes/<domain>/index.md`).
-4. Commit:
+4. **Validator loop, then commit**:
    ```bash
-   cd "$KB_PATH" && git add -A && git commit -m "remember: <one-line summary>"
+   cd "$KB_PATH" && python3 scripts/kb_lint.py
+   ```
+   Fix every ERROR and re-run until clean (the pre-commit hook blocks invalid commits
+   anyway). Then:
+   ```bash
+   git add -A && git commit -m "remember: <one-line summary>"
    ```
 
 ## Fast capture mode

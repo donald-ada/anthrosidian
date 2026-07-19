@@ -40,6 +40,20 @@ references), **episodic** (`episodes/` — append-only daily logs), **procedural
 A `SessionStart` hook injects a ~10-line pointer (KB path, note count, when to recall/
 remember) into every session — the KB itself is never preloaded.
 
+## Enforcement harness
+
+Protocol rules in markdown are advisory — an agent can silently break them. The
+machine-decidable subset is therefore enforced outside the model:
+
+- **`scripts/kb_lint.py`** (installed into the KB by `init`, zero dependencies):
+  validates frontmatter schema and enums, supersede-chain integrity, index budget and
+  reachability (every active note indexed, no superseded note indexed), broken links,
+  and size budgets. Structure only — content judgment stays with the agent.
+- **git pre-commit hook** (installed by `init`): structurally invalid knowledge cannot
+  be committed.
+- `remember` and `consolidate` end with a validator loop: run lint → fix → repeat
+  until clean.
+
 ## KB layout
 
 ```

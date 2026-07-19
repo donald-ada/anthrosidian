@@ -15,7 +15,8 @@
 ├── notes/<domain>/  Semantic memory — atomic notes. The heart of the KB.
 ├── episodes/<YYYY>/ Episodic memory — append-only daily session logs (YYYY-MM-DD.md).
 ├── inbox/           Fast captures awaiting consolidation. No schema required.
-└── sources/         Verbatim external material referenced by notes.
+├── sources/         Verbatim external material referenced by notes.
+└── scripts/         kb_lint.py — structural validator. Run: python3 scripts/kb_lint.py
 ```
 
 ## Reading protocol (recall)
@@ -144,6 +145,8 @@ Run when asked, when `inbox/` holds ≥10 items, or when the index nears budget:
   deleted once distilled; that is the one exception.)
 - Never edit a `superseded` note except to set its status and `superseded_by`.
 - Every write session ends with a `git commit` (message: what knowledge changed).
+- Before committing, run `python3 scripts/kb_lint.py` and fix every ERROR — repeat until
+  clean. A git pre-commit hook enforces this; protocol rules are advisory, lint is not.
 - Machine-facing tokens (paths, keys, enums, slugs) are English; content follows the owner.
 - Mark knowledge `confidence: verified` only after it was actually verified — an
   unverified claim recorded as verified poisons every future session that trusts it.

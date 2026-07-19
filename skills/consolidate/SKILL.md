@@ -42,11 +42,19 @@ Notes with `updated` older than ~180 days: re-verify if cheaply possible (grep t
 relevant repo, check the tool's current docs); otherwise downgrade `confidence` or set
 `status: deprecated`. Never silently trust old knowledge — and never delete it.
 
-## 5. Rebuild the index
+## 5. Rebuild the index and validate
 
 Regenerate `index.md` from the actual `notes/` tree: every active note reachable
 (directly or via a domain index), superseded/deprecated notes removed, budget ≤200
-lines enforced via the overflow rule. Verify `core/` files are each ≤100 lines.
+lines enforced via the overflow rule. Then run the validator loop:
+
+```bash
+cd "$KB_PATH" && python3 scripts/kb_lint.py
+```
+
+Fix every ERROR and re-run until clean; address WARNs where cheap (core files over
+budget, oversized notes). Lint checks structure only — the semantic judgments in
+steps 1–4 remain yours.
 
 ## 6. Commit and report
 
