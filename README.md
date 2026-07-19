@@ -1,97 +1,76 @@
-# anthrosidian — Claude Code / Codex Plugin
+# anthrosidian — an AI-first knowledge base, operated by agents
 
-A Claude Code and Codex plugin that connects your Obsidian knowledge base to any project session. Write daily logs, compile wiki articles, search your vault, and audit your knowledge base — all without leaving your terminal.
+A Claude Code / Codex plugin that turns a plain **markdown + git** directory into a
+personal knowledge base whose **sole consumer is an AI agent**. Humans may browse it;
+every design decision optimizes for an agent with grep/glob/read/write tools and a
+finite context window.
 
-## Features
+v2 is a ground-up redesign. The old Obsidian-centric wiki (daily-log / compile-wiki /
+qa-wiki / health-check) is gone.
 
-- **Daily logging**: Capture notes, bug fixes, and insights directly into today's daily note
-- **Wiki compilation**: Transform raw source materials into structured wiki articles
-- **Knowledge Q&A**: Search and answer questions from your Obsidian wiki
-- **Health checks**: Detect broken links, orphan articles, and missing index entries
-- **URL ingestion**: Paste a URL to fetch and save content into `raw/` with the bundled Anthrosidian helper
-- **Works everywhere**: SessionStart hook injects vault context into every session, from any project directory
-- **Dual plugin support**: Claude Code metadata lives in `.claude-plugin/`; Codex metadata lives in `.codex-plugin/`
+## Design principles (first principles, research-backed)
 
-## Skills
+The consumer is an LLM agent. Its real constraints dictate everything:
 
-| Skill | Trigger Phrases |
-|-------|----------------|
-| `daily-log` | "log this to my Obsidian knowledge base", "record this in my daily note", "write this to my Obsidian daily log" |
-| `compile-wiki` | "compile the wiki", "process raw notes into the knowledge base", "ingest this URL into the knowledge base" |
-| `qa-wiki` | "look this up in my Obsidian knowledge base", "search the wiki for X", "what does my knowledge base say about X" |
-| `health-check` | "health check the knowledge base", "audit my Obsidian wiki", "find orphan articles in my Obsidian vault", "lint the wiki" |
-| `setup` | `/anthrosidian:setup` or "configure the anthrosidian plugin" |
+| Constraint | Design response |
+|---|---|
+| Finite, expensive context window | Progressive disclosure: tiny session hook → 200-line index → atomic notes ≤150 lines. Nothing is preloaded; everything is fetched just-in-time. |
+| Tools are grep/glob/read, not a GUI | Grep-first retrieval; descriptive kebab-case filenames; bilingual `keywords` frontmatter (synonyms + verbatim error strings) as a hand-rolled semantic index. No Obsidian-specific features. |
+| No memory across sessions | The KB is self-describing: its `AGENTS.md` protocol lives *inside* the KB, so any agent — with or without this plugin — can operate it correctly. |
+| Reads notes with zero conversation context | Every note is self-contained: TL;DR first line, "Applies when" scope, provenance, confidence, dates. |
+| Good at write-time synthesis, bad at read-time digestion | Distill at write time. Verbatim quotes for decisions/numbers/errors (paraphrase silently destroys qualifiers). Raw material goes to `sources/`. |
+| Knowledge goes stale and contradicts itself | Deterministic supersession: `status: active/superseded/deprecated` + `superseded_by` links. Never delete — git is the history. Freshness is a grep filter, not an LLM judgment call. |
+| Memory bloat degrades retrieval | A selectivity gate at write time (store less, retrieve better), hard index budget enforced on every write, and a periodic consolidation ("sleep") phase. |
 
-## Requirements
+Memory types are separated because their lifecycles differ:
+**semantic** (`notes/` — atomic facts, procedures, pitfalls, decisions, entities,
+references), **episodic** (`episodes/` — append-only daily logs), **procedural**
+(`core/` — few, curated, standing preferences).
 
-- [Claude Code](https://claude.ai/code) ≥ 2.0 or Codex with local plugin support
-- Python 3 for the bundled URL ingestion helper
+## Operations
 
-Anthrosidian does not require any separate Obsidian skill package.
+| Skill | What it does |
+|---|---|
+| `/anthrosidian:init` | Scaffold the KB (protocol, index, directories), `git init`, save `~/.anthrosidian.conf` |
+| `/anthrosidian:remember` | Write path: selectivity gate → grep for duplicates/contradictions → ADD / UPDATE / SUPERSEDE / NOOP → index + neighbor updates → commit. Fast mode drops raw captures into `inbox/`. |
+| `/anthrosidian:recall` | Read path: grep-first (bilingual probes), index second, read ≤5 active notes, answer with citations — or abstain honestly ("not recorded"). |
+| `/anthrosidian:log` | Append today's episode (append-only, outcome-granularity), promote durable insights to notes. |
+| `/anthrosidian:consolidate` | Sleep phase: distill inbox, dedup/merge, arbitrate contradictions, mine episodes for recurring themes, staleness sweep, rebuild index, commit. |
+
+A `SessionStart` hook injects a ~10-line pointer (KB path, note count, when to recall/
+remember) into every session — the KB itself is never preloaded.
+
+## KB layout
+
+```
+<kb-root>/
+├── AGENTS.md        The protocol — single source of truth, readable by any agent
+├── index.md         One line per note, hard budget 200 lines (overflow → domain indexes)
+├── core/            Standing context: owner profile, preferences (≤100 lines each)
+├── notes/<domain>/  Atomic notes with typed frontmatter (the semantic memory)
+├── episodes/<YYYY>/ Append-only daily logs (the episodic memory)
+├── inbox/           Fast captures awaiting consolidation
+└── sources/         Verbatim external material
+```
+
+Note frontmatter: `type`, `status`, `created`/`updated`, `confidence`
+(verified/reported/inferred), `source`, `keywords`, `superseded_by`.
 
 ## Installation
 
-### Claude Code
-
-### 1. Add the marketplace and install the plugin
-
-In Claude Code, run:
-
 ```
 /plugin marketplace add donald-ada/anthrosidian
+/anthrosidian:init ~/kb
 ```
 
-### 2. Run setup
+Config is one shared file for both Claude Code and Codex: `~/.anthrosidian.conf`
+(`KB_PATH="/absolute/path"`). The Codex manifest is `.codex-plugin/plugin.json`,
+reusing the same skills and hooks.
 
-```
-/anthrosidian:setup
-```
+## Requirements
 
-Enter your vault path when prompted. Config is saved to `~/.claude/obsidian-vault.conf`.
-
-> **Required**: The plugin will not activate without this config file. If the file is missing, each session will prompt you to run `/anthrosidian:setup`.
-
-### Codex
-
-The Codex plugin manifest is `.codex-plugin/plugin.json`. It reuses the same `skills/` and `hooks/` files as Claude Code, with platform-specific config paths handled inside the shared workflows.
-
-Configure the vault from Codex with:
-
-```
-anthrosidian:setup
-```
-
-Codex config is saved to `~/.codex/obsidian-vault.conf`.
-
-## Vault Structure
-
-```
-your-vault/
-├── daily/          Daily notes (YYYY-MM-DD.md)
-├── wiki/           Compiled knowledge articles
-│   └── _index.md   Master index
-├── raw/            Source materials
-├── output/         Generated reports
-├── assets/         Images and media
-└── templates/
-    └── daily-note.md
-```
-
-## Configuration
-
-Claude Code config file: `~/.claude/obsidian-vault.conf`
-
-Codex config file: `~/.codex/obsidian-vault.conf`
-
-```bash
-VAULT_PATH="/absolute/path/to/your/vault"
-```
-
-This file is **required**. Without it, the plugin will not know where your vault is and will prompt you to run setup.
-
-To create or update in Claude Code: `/anthrosidian:setup [vault-path]`
-
-To create or update in Codex: `anthrosidian:setup [vault-path]`
+- Claude Code ≥ 2.0 or Codex with local plugin support
+- git (the KB's audit trail), python3 (hook JSON escaping)
 
 ## License
 
