@@ -1,7 +1,7 @@
 {
   "name": "anthrosidian",
-  "version": "1.0.9",
-  "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, work review, and URL ingestion from any project directory",
+  "version": "2.1.0",
+  "description": "AI-first personal knowledge base operated by agents: gated writes (dedup/supersede), grep-first recall with honest abstention, episodic logging, and sleep-phase consolidation over plain markdown + git",
   "author": {
     "name": "Donald Ada",
     "url": "https://github.com/donald-ada"
@@ -10,19 +10,19 @@
   "repository": "https://github.com/donald-ada/anthrosidian",
   "license": "MIT",
   "keywords": [
-    "obsidian",
     "knowledge-base",
-    "wiki",
-    "daily-log",
-    "notes",
-    "zettelkasten"
+    "agent-memory",
+    "second-brain",
+    "markdown",
+    "memory",
+    "notes"
   ],
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json",
   "interface": {
     "displayName": "Anthrosidian",
-    "shortDescription": "Connect Codex sessions to an Obsidian knowledge base",
-    "longDescription": "Use Anthrosidian to write daily development logs, compile raw sources into wiki articles, answer questions from an Obsidian vault, review completed work, and audit wiki health from Codex.",
+    "shortDescription": "AI-first personal knowledge base operated by agents",
+    "longDescription": "Anthrosidian turns a plain markdown + git directory into a knowledge base whose sole consumer is an AI agent: writes go through a dedup/supersede gate, recall is grep-first with honest abstention, sessions append to an episodic log, and a consolidation phase dedups, resolves contradictions, and sweeps stale knowledge.",
     "developerName": "Donald Ada",
     "category": "Productivity",
     "capabilities": [
@@ -34,9 +34,9 @@
     "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
     "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
     "defaultPrompt": [
-      "Log this to my Obsidian daily note.",
-      "Search my Obsidian wiki for this topic.",
-      "Review my work from this week."
+      "Remember this insight in my knowledge base.",
+      "What does my knowledge base say about this?",
+      "Consolidate my knowledge base."
     ],
     "brandColor": "#6B7280",
     "screenshots": []

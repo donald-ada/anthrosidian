@@ -5,16 +5,16 @@
     "email": ""
   },
   "metadata": {
-    "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, and URL ingestion from any project directory",
-    "version": "1.0.9"
+    "description": "AI-first personal knowledge base operated by agents: gated writes, grep-first recall, episodic logging, and consolidation over plain markdown + git",
+    "version": "2.1.0"
   },
   "plugins": [
     {
       "name": "anthrosidian",
       "source": "./",
-      "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, and URL ingestion from any project directory",
+      "description": "AI-first personal knowledge base operated by agents: gated writes, grep-first recall, episodic logging, and consolidation over plain markdown + git",
       "category": "productivity",
-      "tags": ["obsidian", "knowledge-base", "wiki", "daily-log", "notes", "zettelkasten"]
+      "tags": ["knowledge-base", "agent-memory", "second-brain", "markdown", "memory", "notes"]
     }
   ]
 }

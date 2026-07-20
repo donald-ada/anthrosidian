@@ -1,5 +1,5 @@
 {
-  "description": "Inject Obsidian vault context on session start",
+  "description": "Inject a minimal knowledge-base pointer on session start",
   "hooks": {
     "SessionStart": [
       {

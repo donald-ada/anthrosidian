@@ -1,12 +1,12 @@
 {
   "name": "anthrosidian",
-  "version": "1.0.9",
-  "description": "LLM-driven Obsidian knowledge base: auto daily logging, wiki compilation, Q&A, work review, and URL ingestion from any project directory",
+  "version": "2.1.0",
+  "description": "AI-first personal knowledge base operated by agents: gated writes (dedup/supersede), grep-first recall with honest abstention, episodic logging, and sleep-phase consolidation over plain markdown + git",
   "author": {
     "name": "Donald Ada",
     "url": "https://github.com/donald-ada"
   },
   "repository": "https://github.com/donald-ada/anthrosidian",
   "license": "MIT",
-  "keywords": ["obsidian", "knowledge-base", "wiki", "daily-log", "notes", "zettelkasten"]
+  "keywords": ["knowledge-base", "agent-memory", "second-brain", "markdown", "memory", "notes"]
 }
