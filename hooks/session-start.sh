@@ -22,7 +22,10 @@ Knowledge base configured at ${KB_PATH} but the directory does not exist.
 Fix ${CONFIG} or run /anthrosidian:init.
 </anthrosidian>"
 else
-  NOTE_COUNT=$(grep -rl "^status: active" "$KB_PATH/notes" 2>/dev/null | wc -l | tr -d ' ')
+  # grep exits 1 on no match; under set -euo pipefail that would silently kill
+  # the whole hook — an empty KB is a normal state, not an error.
+  NOTE_COUNT=$(grep -rl "^status: active" "$KB_PATH/notes" 2>/dev/null | wc -l | tr -d ' ' || true)
+  NOTE_COUNT=${NOTE_COUNT:-0}
   CONTEXT="<anthrosidian>
 The user has a personal knowledge base at: ${KB_PATH} (${NOTE_COUNT} notes; protocol: ${KB_PATH}/AGENTS.md)
 It is written by and for AI agents. Use it just-in-time — do not preload it:
